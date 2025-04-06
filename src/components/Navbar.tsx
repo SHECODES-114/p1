@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,6 +28,16 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Hide logo animation after 3 seconds
+    const logoAnimation = document.getElementById('logo-animation');
+    if (logoAnimation) {
+      setTimeout(() => {
+        logoAnimation.style.display = 'none';
+      }, 3000);
+    }
+  }, []);
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -35,7 +46,8 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
-          <a href="#" className="text-2xl font-bold gradient-text">
+          <a href="#" className="text-2xl font-bold gradient-text inline-flex items-center gap-2">
+            <Logo size={28} />
             RegeniScan
           </a>
         </div>

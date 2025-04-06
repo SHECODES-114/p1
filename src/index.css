@@ -99,3 +99,23 @@
     @apply bg-white p-6 rounded-xl shadow-md border-t border-regeni-light transition-all hover:shadow-lg hover:-translate-y-1;
   }
 }
+
+/* Logo animation */
+@keyframes logo-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-logo-appear {
+  animation: logo-appear 3s forwards;
+}
