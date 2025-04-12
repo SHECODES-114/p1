@@ -6,13 +6,14 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
+    // Set a longer display time for the splash screen
     const timer = setTimeout(() => {
       setFadeOut(true);
-    }, 2500);
+    }, 3000);
 
     const completeTimer = setTimeout(() => {
       onComplete();
-    }, 3000);
+    }, 3500);
 
     return () => {
       clearTimeout(timer);
@@ -29,7 +30,7 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
       <div className="text-center px-6 relative z-10">
         <div className="mb-8 relative">
           <div className="absolute inset-0 animate-pulse rounded-full bg-regeni-teal/20 -m-6"></div>
-          <Logo size={180} animated={true} variant="elegant" />
+          <Logo size={200} animated={true} variant="elegant" />
         </div>
         <h1 className="text-white text-5xl font-bold mt-6 animate-fade-in">RegeniScan</h1>
         <p className="text-white/70 mt-2 animate-fade-in">Revolutionizing Waste Management</p>

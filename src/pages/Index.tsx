@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
@@ -9,20 +9,12 @@ import EcoNFT from "@/components/EcoNFT";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import BackButton from "@/components/BackButton";
-import Logo from "@/components/Logo";
-import SplashScreen from "@/components/SplashScreen";
-import DemoScanner from "@/components/DemoScanner";
 import UserSidebar from "@/components/UserSidebar";
 import { User, ArrowDown, Camera } from "lucide-react";
 
 const Index = () => {
-  const [showSplash, setShowSplash] = useState(true);
   const [showUserSidebar, setShowUserSidebar] = useState(false);
   
-  const handleSplashComplete = () => {
-    setShowSplash(false);
-  };
-
   const scrollToScanner = () => {
     const scannerSection = document.getElementById('scan-now');
     if (scannerSection) {
@@ -32,8 +24,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
-      
       <Navbar 
         onProfileClick={() => setShowUserSidebar(true)}
       />
