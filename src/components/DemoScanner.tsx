@@ -118,6 +118,20 @@ const DemoScanner = () => {
       points: 110,
       image: "https://images.unsplash.com/photo-1611675745374-225638a45d56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
       tag: "new"
+    },
+    {
+      name: "Organic Cotton Produce Bags",
+      description: "Reusable mesh bags for fruits and vegetables shopping",
+      points: 85,
+      image: "https://images.unsplash.com/photo-1610375461249-83edb4e16ca6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      tag: "biodegradable"
+    },
+    {
+      name: "Cork Yoga Mat",
+      description: "Natural, biodegradable yoga mat made from sustainable cork",
+      points: 250,
+      image: "https://images.unsplash.com/photo-1605296866985-43335a7ad4e4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      tag: "biodegradable"
     }
   ];
   
@@ -141,13 +155,22 @@ const DemoScanner = () => {
     setScanResult(null);
   };
 
+  const closeDrawer = () => {
+    // This function uses DOM to find and click the close button
+    const closeButton = document.querySelector('[data-drawer-close]');
+    if (closeButton instanceof HTMLElement) {
+      closeButton.click();
+    }
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 max-w-md mx-auto">
+    <div className="bg-white rounded-xl shadow-lg p-6 max-w-md mx-auto relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-regeni-teal to-regeni-green"></div>
       <h3 className="text-xl font-semibold mb-4 gradient-text">Waste Scanner</h3>
       
       {!scanResult ? (
         <div className="space-y-4">
-          <div className="bg-gray-100 rounded-lg aspect-video flex items-center justify-center">
+          <div className="bg-gray-100 rounded-lg aspect-video flex items-center justify-center relative overflow-hidden border-2 border-regeni-light hover:border-regeni-teal transition-colors">
             {isScanning ? (
               <div className="text-center">
                 <div className="w-16 h-16 border-4 border-regeni-teal border-t-transparent rounded-full animate-spin mx-auto"></div>
@@ -155,9 +178,10 @@ const DemoScanner = () => {
               </div>
             ) : (
               <div className="text-center">
-                <Camera size={48} className="text-muted-foreground mx-auto" />
+                <Camera size={48} className="text-muted-foreground mx-auto animate-pulse" />
                 <p className="mt-2 text-muted-foreground">Ready to scan</p>
                 <p className="text-xs text-muted-foreground mt-1">Tap the button below to open camera</p>
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-regeni-teal/10"></div>
               </div>
             )}
           </div>
@@ -165,7 +189,7 @@ const DemoScanner = () => {
           <Drawer>
             <DrawerTrigger asChild>
               <button 
-                className="w-full gradient-bg text-white py-3 rounded-lg font-medium transition-all hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full gradient-bg text-white py-3 rounded-lg font-medium transition-all hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
                 disabled={isScanning}
               >
                 <Camera size={20} />
@@ -180,8 +204,9 @@ const DemoScanner = () => {
                 </DrawerDescription>
               </DrawerHeader>
               <div className="mt-4">
-                <div className="bg-gray-100 rounded-lg aspect-video flex items-center justify-center">
-                  <Camera size={64} className="text-muted-foreground mx-auto" />
+                <div className="bg-gray-100 rounded-lg aspect-video flex items-center justify-center relative overflow-hidden">
+                  <Camera size={64} className="text-muted-foreground mx-auto animate-pulse" />
+                  <div className="absolute inset-0 animate-scan"></div>
                 </div>
                 <div className="grid grid-cols-2 gap-2 mt-4">
                   {demoItems.map((item, index) => (
@@ -189,9 +214,9 @@ const DemoScanner = () => {
                       key={index}
                       onClick={() => {
                         handleScan(item);
-                        document.querySelector('[data-drawer-close]')?.click();
+                        closeDrawer();
                       }}
-                      className="text-sm py-3 px-3 bg-regeni-light text-regeni-teal rounded-lg hover:bg-regeni-light/80 transition-colors flex flex-col items-center gap-1"
+                      className="text-sm py-3 px-3 bg-regeni-light text-regeni-teal rounded-lg hover:bg-regeni-light/80 transition-colors flex flex-col items-center gap-1 hover:shadow-md"
                     >
                       <span className="font-medium">{item.name}</span>
                       <span className="text-xs">+{item.rewardPoints} points</span>
@@ -210,7 +235,7 @@ const DemoScanner = () => {
                   key={index}
                   onClick={() => handleScan(item)}
                   disabled={isScanning}
-                  className="text-sm py-2 px-3 bg-regeni-light text-regeni-teal rounded-lg hover:bg-regeni-light/80 transition-colors"
+                  className="text-sm py-2 px-3 bg-regeni-light text-regeni-teal rounded-lg hover:bg-regeni-light/80 transition-colors hover:shadow-md"
                 >
                   {item.name} (+{item.rewardPoints} pts)
                 </button>
@@ -235,7 +260,7 @@ const DemoScanner = () => {
           {scanResult.arVisualization && (
             <div>
               <p className="font-medium mb-2">AR Visualization</p>
-              <div className="relative rounded-lg overflow-hidden animate-scan">
+              <div className="relative rounded-lg overflow-hidden animate-scan shadow-md">
                 <img 
                   src={scanResult.arVisualization} 
                   alt="AR visualization" 
@@ -249,7 +274,7 @@ const DemoScanner = () => {
           )}
           
           {scanResult.ecoNFT && (
-            <div className="bg-regeni-light/50 p-4 rounded-lg">
+            <div className="bg-regeni-light/50 p-4 rounded-lg border border-regeni-teal/20">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="font-medium">NFT Reward Available</h4>
                 <span className="text-xs bg-regeni-teal text-white px-2 py-1 rounded-full">
@@ -259,7 +284,7 @@ const DemoScanner = () => {
               <p className="text-sm text-muted-foreground mb-3">
                 You've earned the "{scanResult.ecoNFT}" EcoNFT!
               </p>
-              <button className="w-full bg-white border border-regeni-teal text-regeni-teal py-2 rounded-lg font-medium transition-all hover:bg-regeni-light">
+              <button className="w-full bg-white border border-regeni-teal text-regeni-teal py-2 rounded-lg font-medium transition-all hover:bg-regeni-light shadow-sm hover:shadow-md">
                 Claim NFT
               </button>
             </div>
@@ -268,7 +293,7 @@ const DemoScanner = () => {
           <div className="flex gap-2">
             <button 
               onClick={resetScan}
-              className="flex-1 flex items-center justify-center gap-2 border border-gray-300 bg-gray-50 text-gray-700 py-2 rounded-lg font-medium transition-all hover:bg-gray-100"
+              className="flex-1 flex items-center justify-center gap-2 border border-gray-300 bg-gray-50 text-gray-700 py-2 rounded-lg font-medium transition-all hover:bg-gray-100 shadow-sm hover:shadow-md"
             >
               <RefreshCcw size={16} />
               Scan Another
@@ -276,7 +301,7 @@ const DemoScanner = () => {
             
             <Sheet>
               <SheetTrigger asChild>
-                <button className="flex-1 flex items-center justify-center gap-2 gradient-bg text-white py-2 rounded-lg font-medium transition-all hover:opacity-90">
+                <button className="flex-1 flex items-center justify-center gap-2 gradient-bg text-white py-2 rounded-lg font-medium transition-all hover:opacity-90 shadow-sm hover:shadow-md">
                   <Package size={16} />
                   Redeem Points
                 </button>
@@ -288,9 +313,9 @@ const DemoScanner = () => {
                     You have earned {scanResult.rewardPoints} points. Explore biodegradable products you can redeem.
                   </SheetDescription>
                 </SheetHeader>
-                <div className="mt-6 space-y-4">
+                <div className="mt-6 space-y-4 max-h-[70vh] overflow-y-auto pr-2">
                   {rewardProducts.map((product, index) => (
-                    <div key={index} className="border border-border rounded-lg p-3 hover:border-regeni-teal transition-all">
+                    <div key={index} className="border border-border rounded-lg p-3 hover:border-regeni-teal transition-all hover:shadow-md">
                       <div className="flex gap-3">
                         <div className="w-20 h-20 rounded-md overflow-hidden bg-muted">
                           <img 

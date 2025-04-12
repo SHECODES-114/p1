@@ -23,7 +23,7 @@ const Logo = ({ size = 24, animated = false, variant = "default" }: LogoProps) =
 
   return (
     <div 
-      className={`inline-flex items-center justify-center ${isAnimating ? 'animate-logo-appear' : ''}`}
+      className={`inline-flex items-center justify-center relative ${isAnimating ? 'animate-logo-appear' : ''}`}
       style={{ 
         fontSize: `${size * 0.75}px`,
         height: size,
@@ -32,6 +32,7 @@ const Logo = ({ size = 24, animated = false, variant = "default" }: LogoProps) =
     >
       {variant === "elegant" ? (
         <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-regeni-teal to-regeni-green rounded-full opacity-20"></div>
           <Shield 
             size={size} 
             className="text-regeni-teal z-10 relative"
@@ -42,6 +43,9 @@ const Logo = ({ size = 24, animated = false, variant = "default" }: LogoProps) =
             className="text-regeni-green absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             strokeWidth={1.5}
           />
+          {isAnimating && (
+            <div className="absolute -inset-4 border-2 border-regeni-light rounded-full animate-ping"></div>
+          )}
         </div>
       ) : variant === "unique" ? (
         <div className="relative">
