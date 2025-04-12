@@ -38,7 +38,7 @@ const Logo = ({ size = 24, animated = false, variant = "default" }: LogoProps) =
             strokeWidth={1.5}
           />
           <Leaf 
-            size={size * 0.5} 
+            size={size * 0.6} 
             className="text-regeni-green absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             strokeWidth={1.5}
           />

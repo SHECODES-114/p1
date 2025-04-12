@@ -27,9 +27,9 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
       }`}
     >
       <div className="text-center">
-        <Logo size={150} animated={true} variant="elegant" />
-        <h1 className="text-white text-4xl font-bold mt-6">RegeniScan</h1>
-        <p className="text-white/70 mt-2">Revolutionizing Waste Management</p>
+        <Logo size={180} animated={true} variant="elegant" />
+        <h1 className="text-white text-5xl font-bold mt-6 animate-fade-in">RegeniScan</h1>
+        <p className="text-white/70 mt-2 animate-fade-in">Revolutionizing Waste Management</p>
       </div>
     </div>
   );

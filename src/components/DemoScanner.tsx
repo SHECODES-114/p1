@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import { Camera, Check, RefreshCcw, Package, ShoppingBag, Leaf } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 
 type ScanResult = {
+  name: string;
   item: string;
   recyclable: boolean;
   rewardPoints: number;
@@ -27,6 +29,7 @@ const DemoScanner = () => {
   const demoItems = [
     {
       name: "Plastic Bottle (PET)",
+      item: "Plastic Bottle",
       recyclable: true,
       rewardPoints: 25,
       ecoNFT: "Recycling Pioneer",
@@ -34,6 +37,7 @@ const DemoScanner = () => {
     },
     {
       name: "Plastic Bag",
+      item: "Plastic Bag",
       recyclable: true,
       rewardPoints: 15,
       ecoNFT: "Plastic Reducer",
@@ -41,6 +45,7 @@ const DemoScanner = () => {
     },
     {
       name: "Glass Bottle",
+      item: "Glass Bottle",
       recyclable: true,
       rewardPoints: 30,
       ecoNFT: "Glass Guardian",
@@ -48,6 +53,7 @@ const DemoScanner = () => {
     },
     {
       name: "Cardboard Box",
+      item: "Cardboard Box",
       recyclable: true,
       rewardPoints: 20,
       ecoNFT: "Paper Protector",
@@ -55,6 +61,7 @@ const DemoScanner = () => {
     },
     {
       name: "Aluminum Can",
+      item: "Aluminum Can",
       recyclable: true,
       rewardPoints: 35,
       ecoNFT: "Metal Master",
@@ -97,6 +104,20 @@ const DemoScanner = () => {
       points: 90,
       image: "https://images.unsplash.com/photo-1605600659873-d808a13e4d2a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
       tag: "biodegradable"
+    },
+    {
+      name: "Bamboo Toothbrush Set",
+      description: "Eco-friendly bamboo toothbrushes with biodegradable bristles",
+      points: 80,
+      image: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      tag: "biodegradable"
+    },
+    {
+      name: "Beeswax Food Wraps",
+      description: "Reusable food wraps made from organic cotton and beeswax",
+      points: 110,
+      image: "https://images.unsplash.com/photo-1611675745374-225638a45d56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      tag: "new"
     }
   ];
   
@@ -119,10 +140,10 @@ const DemoScanner = () => {
   const resetScan = () => {
     setScanResult(null);
   };
-  
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 max-w-md mx-auto">
-      <h3 className="text-xl font-semibold mb-4 gradient-text">Demo Scanner</h3>
+      <h3 className="text-xl font-semibold mb-4 gradient-text">Waste Scanner</h3>
       
       {!scanResult ? (
         <div className="space-y-4">
@@ -136,18 +157,50 @@ const DemoScanner = () => {
               <div className="text-center">
                 <Camera size={48} className="text-muted-foreground mx-auto" />
                 <p className="mt-2 text-muted-foreground">Ready to scan</p>
+                <p className="text-xs text-muted-foreground mt-1">Tap the button below to open camera</p>
               </div>
             )}
           </div>
           
-          <button 
-            onClick={() => handleScan()}
-            disabled={isScanning}
-            className="w-full gradient-bg text-white py-3 rounded-lg font-medium transition-all hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
-          >
-            <Camera size={20} />
-            {isScanning ? "Scanning..." : "Scan Waste Item"}
-          </button>
+          <Drawer>
+            <DrawerTrigger asChild>
+              <button 
+                className="w-full gradient-bg text-white py-3 rounded-lg font-medium transition-all hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+                disabled={isScanning}
+              >
+                <Camera size={20} />
+                {isScanning ? "Scanning..." : "Open Camera to Scan Waste"}
+              </button>
+            </DrawerTrigger>
+            <DrawerContent className="p-6">
+              <DrawerHeader>
+                <DrawerTitle>Scan Waste Item</DrawerTitle>
+                <DrawerDescription>
+                  Position your camera to scan the waste item. For demo purposes, select an item below.
+                </DrawerDescription>
+              </DrawerHeader>
+              <div className="mt-4">
+                <div className="bg-gray-100 rounded-lg aspect-video flex items-center justify-center">
+                  <Camera size={64} className="text-muted-foreground mx-auto" />
+                </div>
+                <div className="grid grid-cols-2 gap-2 mt-4">
+                  {demoItems.map((item, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        handleScan(item);
+                        document.querySelector('[data-drawer-close]')?.click();
+                      }}
+                      className="text-sm py-3 px-3 bg-regeni-light text-regeni-teal rounded-lg hover:bg-regeni-light/80 transition-colors flex flex-col items-center gap-1"
+                    >
+                      <span className="font-medium">{item.name}</span>
+                      <span className="text-xs">+{item.rewardPoints} points</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </DrawerContent>
+          </Drawer>
           
           <div className="mt-6">
             <p className="text-sm font-medium text-gray-700 mb-3">Or try a demo item:</p>
@@ -159,7 +212,7 @@ const DemoScanner = () => {
                   disabled={isScanning}
                   className="text-sm py-2 px-3 bg-regeni-light text-regeni-teal rounded-lg hover:bg-regeni-light/80 transition-colors"
                 >
-                  {item.name} ({item.rewardPoints} pts)
+                  {item.name} (+{item.rewardPoints} pts)
                 </button>
               ))}
             </div>
