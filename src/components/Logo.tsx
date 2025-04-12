@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect } from "react";
-import { Recycle, Sparkles } from "lucide-react";
+import { Recycle, Sparkles, Shield, Leaf } from "lucide-react";
 
 type LogoProps = {
   size?: number;
   animated?: boolean;
-  variant?: "default" | "unique";
+  variant?: "default" | "unique" | "elegant";
 };
 
 const Logo = ({ size = 24, animated = false, variant = "default" }: LogoProps) => {
@@ -30,7 +30,20 @@ const Logo = ({ size = 24, animated = false, variant = "default" }: LogoProps) =
         width: size,
       }}
     >
-      {variant === "unique" ? (
+      {variant === "elegant" ? (
+        <div className="relative">
+          <Shield 
+            size={size} 
+            className="text-regeni-teal z-10 relative"
+            strokeWidth={1.5}
+          />
+          <Leaf 
+            size={size * 0.5} 
+            className="text-regeni-green absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            strokeWidth={1.5}
+          />
+        </div>
+      ) : variant === "unique" ? (
         <div className="relative">
           <Recycle 
             size={size} 

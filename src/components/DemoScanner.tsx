@@ -1,6 +1,8 @@
 
 import React, { useState } from "react";
-import { Camera, Check, RefreshCcw } from "lucide-react";
+import { Camera, Check, RefreshCcw, Package, ShoppingBag, Leaf } from "lucide-react";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 
 type ScanResult = {
   item: string;
@@ -10,23 +12,107 @@ type ScanResult = {
   arVisualization?: string;
 };
 
+type RewardProduct = {
+  name: string;
+  description: string;
+  points: number;
+  image: string;
+  tag: "popular" | "new" | "biodegradable" | "";
+};
+
 const DemoScanner = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
+
+  const demoItems = [
+    {
+      name: "Plastic Bottle (PET)",
+      recyclable: true,
+      rewardPoints: 25,
+      ecoNFT: "Recycling Pioneer",
+      arVisualization: "https://images.unsplash.com/photo-1598541264502-84dc6aa2fb87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Plastic Bag",
+      recyclable: true,
+      rewardPoints: 15,
+      ecoNFT: "Plastic Reducer",
+      arVisualization: "https://images.unsplash.com/photo-1571727153934-b9e0cabd9bbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Glass Bottle",
+      recyclable: true,
+      rewardPoints: 30,
+      ecoNFT: "Glass Guardian",
+      arVisualization: "https://images.unsplash.com/photo-1615486511483-92833bdad35e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Cardboard Box",
+      recyclable: true,
+      rewardPoints: 20,
+      ecoNFT: "Paper Protector",
+      arVisualization: "https://images.unsplash.com/photo-1607349913338-fca47890d196?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Aluminum Can",
+      recyclable: true,
+      rewardPoints: 35,
+      ecoNFT: "Metal Master",
+      arVisualization: "https://images.unsplash.com/photo-1587161584760-f32bd855bcc9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+    }
+  ];
   
-  const handleScan = () => {
+  const rewardProducts: RewardProduct[] = [
+    {
+      name: "Bamboo Cutlery Set",
+      description: "Reusable biodegradable bamboo utensils for on-the-go meals",
+      points: 150,
+      image: "https://images.unsplash.com/photo-1584346133934-a3044b0e05e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      tag: "popular"
+    },
+    {
+      name: "Compostable Food Containers",
+      description: "Plant-based food containers that decompose naturally",
+      points: 200,
+      image: "https://images.unsplash.com/photo-1610546190208-d56b13d5861d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      tag: "biodegradable"
+    },
+    {
+      name: "Hemp Tote Bag",
+      description: "Durable, sustainable shopping bag made from hemp fibers",
+      points: 120,
+      image: "https://images.unsplash.com/photo-1591822218899-0919ef3dd0a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      tag: "biodegradable"
+    },
+    {
+      name: "Biodegradable Plant Pots",
+      description: "Plant directly in these pots that break down in soil",
+      points: 100,
+      image: "https://images.unsplash.com/photo-1621489358334-8a8bfb2563d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      tag: "new"
+    },
+    {
+      name: "Cornstarch Garbage Bags",
+      description: "Fully compostable trash bags made from cornstarch",
+      points: 90,
+      image: "https://images.unsplash.com/photo-1605600659873-d808a13e4d2a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+      tag: "biodegradable"
+    }
+  ];
+  
+  const handleScan = (item = null) => {
     setIsScanning(true);
     
     // Simulate scanning delay
     setTimeout(() => {
       setIsScanning(false);
-      setScanResult({
-        item: "Plastic Bottle (PET)",
-        recyclable: true,
-        rewardPoints: 25,
-        ecoNFT: "Recycling Pioneer",
-        arVisualization: "https://images.unsplash.com/photo-1598541264502-84dc6aa2fb87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-      });
+      if (item) {
+        setScanResult(item);
+      } else {
+        // Pick a random item if none specified
+        const randomItem = demoItems[Math.floor(Math.random() * demoItems.length)];
+        setScanResult(randomItem);
+      }
     }, 2000);
   };
   
@@ -53,13 +139,31 @@ const DemoScanner = () => {
               </div>
             )}
           </div>
+          
           <button 
-            onClick={handleScan}
+            onClick={() => handleScan()}
             disabled={isScanning}
-            className="w-full gradient-bg text-white py-3 rounded-lg font-medium transition-all hover:opacity-90 disabled:opacity-50 flex items-center justify-center"
+            className="w-full gradient-bg text-white py-3 rounded-lg font-medium transition-all hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {isScanning ? "Scanning..." : "Scan Plastic Item"}
+            <Camera size={20} />
+            {isScanning ? "Scanning..." : "Scan Waste Item"}
           </button>
+          
+          <div className="mt-6">
+            <p className="text-sm font-medium text-gray-700 mb-3">Or try a demo item:</p>
+            <div className="grid grid-cols-2 gap-2">
+              {demoItems.slice(0, 4).map((item, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleScan(item)}
+                  disabled={isScanning}
+                  className="text-sm py-2 px-3 bg-regeni-light text-regeni-teal rounded-lg hover:bg-regeni-light/80 transition-colors"
+                >
+                  {item.name} ({item.rewardPoints} pts)
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       ) : (
         <div className="space-y-6">
@@ -68,7 +172,7 @@ const DemoScanner = () => {
               <Check size={24} className="text-regeni-green" />
             </div>
             <div>
-              <h4 className="font-semibold text-lg">{scanResult.item}</h4>
+              <h4 className="font-semibold text-lg">{scanResult.name}</h4>
               <p className="text-sm text-muted-foreground">
                 {scanResult.recyclable ? "Recyclable" : "Not recyclable"} • {scanResult.rewardPoints} points earned
               </p>
@@ -78,7 +182,7 @@ const DemoScanner = () => {
           {scanResult.arVisualization && (
             <div>
               <p className="font-medium mb-2">AR Visualization</p>
-              <div className="relative rounded-lg overflow-hidden">
+              <div className="relative rounded-lg overflow-hidden animate-scan">
                 <img 
                   src={scanResult.arVisualization} 
                   alt="AR visualization" 
@@ -108,13 +212,75 @@ const DemoScanner = () => {
             </div>
           )}
           
-          <button 
-            onClick={resetScan}
-            className="w-full flex items-center justify-center gap-2 border border-gray-300 bg-gray-50 text-gray-700 py-2 rounded-lg font-medium transition-all hover:bg-gray-100"
-          >
-            <RefreshCcw size={16} />
-            Scan Another Item
-          </button>
+          <div className="flex gap-2">
+            <button 
+              onClick={resetScan}
+              className="flex-1 flex items-center justify-center gap-2 border border-gray-300 bg-gray-50 text-gray-700 py-2 rounded-lg font-medium transition-all hover:bg-gray-100"
+            >
+              <RefreshCcw size={16} />
+              Scan Another
+            </button>
+            
+            <Sheet>
+              <SheetTrigger asChild>
+                <button className="flex-1 flex items-center justify-center gap-2 gradient-bg text-white py-2 rounded-lg font-medium transition-all hover:opacity-90">
+                  <Package size={16} />
+                  Redeem Points
+                </button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Redeem Your Points</SheetTitle>
+                  <SheetDescription>
+                    You have earned {scanResult.rewardPoints} points. Explore biodegradable products you can redeem.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="mt-6 space-y-4">
+                  {rewardProducts.map((product, index) => (
+                    <div key={index} className="border border-border rounded-lg p-3 hover:border-regeni-teal transition-all">
+                      <div className="flex gap-3">
+                        <div className="w-20 h-20 rounded-md overflow-hidden bg-muted">
+                          <img 
+                            src={product.image} 
+                            alt={product.name} 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-medium text-sm">{product.name}</h4>
+                            {product.tag && (
+                              <span 
+                                className={`text-[10px] px-1.5 py-0.5 rounded-full uppercase font-medium ${
+                                  product.tag === 'biodegradable' ? 'bg-regeni-light text-regeni-teal' :
+                                  product.tag === 'new' ? 'bg-blue-100 text-blue-700' :
+                                  'bg-orange-100 text-orange-700'
+                                }`}
+                              >
+                                {product.tag}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">{product.description}</p>
+                          <div className="flex items-center justify-between mt-2">
+                            <span className="text-xs font-semibold">{product.points} points</span>
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              className="h-7 text-xs"
+                              disabled={scanResult.rewardPoints < product.points}
+                            >
+                              {scanResult.rewardPoints >= product.points ? "Redeem" : "Not enough points"}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       )}
     </div>
